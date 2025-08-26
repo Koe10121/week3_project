@@ -94,7 +94,27 @@ Future<void> today_expenses(int userId) async {
   }
 }
 
-Future<void> search_expense(int userId) async {}
+Future<void> search_expense(int userId) async {
+  stdout.write('Item to search: ');
+  String? item = stdin.readLineSync()?.trim();
+
+  final url = Uri.parse("$baseUrl/expenses/search/$userId?item=$item");
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    final expenses = jsonDecode(response.body);
+
+    print('---------- Search expenses ----------');
+    if (expenses.isEmpty) {
+      print('No item: $item');
+    } else {
+      for (var expense in expenses) {
+        print(
+          '${expense['id']} : ${expense['item']} : ${expense['paid']} : ${expense['date']}',
+        );
+      }
+    }
+  }
+}
 
 Future<void> add_expense(int userId) async {}
 
