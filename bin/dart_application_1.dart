@@ -59,3 +59,23 @@ void main() async {
     print("Unknown error");
   }
 }
+
+Future<void> all_expenses(int userId) async {
+  
+}
+
+Future<void> today_expenses(int userId) async {
+  
+}
+
+Future<void> search_expense(int userId) async {
+  
+}
+
+Future<void> add_expense(int userId) async {
+  
+}
+
+Future<void> delete_expense(int userId) async {
+  
+}
