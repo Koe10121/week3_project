@@ -96,6 +96,32 @@ Future<void> today_expenses(int userId) async {
 
 Future<void> search_expense(int userId) async {}
 
-Future<void> add_expense(int userId) async {}
+Future<void> add_expense(int userId) async {
+  stdout.write('Item: ');
+  String? item = stdin.readLineSync()?.trim();
+  stdout.write('Paid: ');
+  String? paidStr = stdin.readLineSync()?.trim();
+  int? paid = int.tryParse(paidStr ?? '');
+  if (item == null || paid == null) {
+    print('Item and paid amount cannot be empty.');
+    return;
+  }
+
+  final url = Uri.parse("$baseUrl/expenses");
+  final response = await http.post(
+    url,
+    body: {'userId': userId.toString(), 'item': item, 'paid': paid.toString()},
+  );
+  if (response.statusCode == 201) {
+    final result = response.body;
+    print(result);
+  } else if (response.statusCode == 400) {
+    final result = response.body;
+    print(result);
+  } else if (response.statusCode == 500) {
+    final result = response.body;
+    print(result);
+  }
+}
 
 Future<void> delete_expense(int userId) async {}
