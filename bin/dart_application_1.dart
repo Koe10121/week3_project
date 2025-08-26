@@ -61,21 +61,26 @@ void main() async {
 }
 
 Future<void> all_expenses(int userId) async {
-  
+  final url = Uri.parse("$baseUrl/expenses/$userId");
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    final expenses = jsonDecode(response.body);
+    int total = 0;
+    print('---------- All expenses ----------');
+    for (var expense in expenses) {
+      print(
+        '${expense['id']} : ${expense['item']} : ${expense['paid']} : ${expense['date']}',
+      );
+      total += expense['paid'] as int;
+    }
+    print(total);
+  }
 }
 
-Future<void> today_expenses(int userId) async {
-  
-}
+Future<void> today_expenses(int userId) async {}
 
-Future<void> search_expense(int userId) async {
-  
-}
+Future<void> search_expense(int userId) async {}
 
-Future<void> add_expense(int userId) async {
-  
-}
+Future<void> add_expense(int userId) async {}
 
-Future<void> delete_expense(int userId) async {
-  
-}
+Future<void> delete_expense(int userId) async {}
