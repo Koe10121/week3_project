@@ -29,6 +29,17 @@ app.post('/login', (req, res) => {
   });
 });
 
+app.get('/expenses/:userId', (req, res) => {
+    const userId = req.params.userId;
+    const sql = 'SELECT * FROM expense WHERE user_id = ?';
+    con.query(sql, [userId], (err, result) => {
+        if (err) {
+        return res.status(500).send('Server error');
+        }
+        return res.json(result);
+    });
+});
+
 app.listen(3000, () => {
   console.log('Server is running');
 });
