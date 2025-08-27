@@ -78,6 +78,20 @@ app.post('/expenses', (req, res) => {
   });
 });
 
+app.delete('/expenses/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM expense WHERE id = ?';
+  con.query(sql, [id], (err, result) => {
+    if (err) {
+      return res.status(500).send('Server error');
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).send('Expense not found');
+    }
+    return res.status(200).send('Expense deleted successfully');
+  });
+});
+
 app.listen(3000, () => {
   console.log('Server is running');
 });
