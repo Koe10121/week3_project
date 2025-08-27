@@ -64,6 +64,20 @@ app.get('/expenses/search/:userId', (req, res) => {
   });
 });
 
+app.post('/expenses', (req, res) => {
+  const { userId, item, paid } = req.body;
+  if (!userId || !item || !paid) {
+    return res.status(400).send('Missing fields');
+  }
+  const sql = 'INSERT INTO expense (user_id, item, paid, date) VALUES (?, ?, ?, NOW())';
+  con.query(sql, [userId, item, paid], (err, result) => {
+    if (err) {
+      return res.status(500).send('Server error');
+    }
+    return res.status(201).send('Inserted!');
+  });
+});
+
 app.listen(3000, () => {
   console.log('Server is running');
 });
