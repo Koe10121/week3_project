@@ -144,4 +144,26 @@ Future<void> add_expense(int userId) async {
   }
 }
 
-Future<void> delete_expense(int userId) async {}
+  Future<void> delete_expense(int userId) async {
+  print('===== Delete an item =====');
+  stdout.write('Item id:');
+  String? idStr = stdin.readLineSync()?.trim();
+  int? id = int.tryParse(idStr ?? '');
+  if (id == null) {
+    print('Invalid expense ID.');
+    return;
+  }
+
+  final url = Uri.parse("$baseUrl/expenses/$id");
+  final response = await http.delete(url);
+  if (response.statusCode == 200) {
+    final result = response.body;
+    print(result);
+  } else if (response.statusCode == 404) {
+    final result = response.body;
+    print(result);
+  } else {
+    print('Unknown error');
+  }
+}
+
