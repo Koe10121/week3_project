@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcrypt');
 const con = require('./db');
 
 app.use(express.json());
@@ -13,7 +13,7 @@ app.post('/login', (req, res) => {
     if (err) {
       return res.status(500).send('Server error');
     }
-    if (result.length !== 1) { 
+    if (result.length !== 1) {
       return res.status(401).send("Wrong username");
     }
     const user = result[0];
@@ -24,20 +24,32 @@ app.post('/login', (req, res) => {
       if (!isMatch) {
         return res.status(401).send("Wrong password");
       }
-      return res.json({ userId: user.id , userName: user.username});; 
+      return res.json({ userId: user.id, userName: user.username });;
     });
   });
 });
 
 app.get('/expenses/:userId', (req, res) => {
-    const userId = req.params.userId;
-    const sql = 'SELECT * FROM expense WHERE user_id = ?';
-    con.query(sql, [userId], (err, result) => {
-        if (err) {
-        return res.status(500).send('Server error');
-        }
-        return res.json(result);
-    });
+  const userId = req.params.userId;
+  const sql = 'SELECT * FROM expense WHERE user_id = ?';
+  con.query(sql, [userId], (err, result) => {
+    if (err) {
+      return res.status(500).send('Server error');
+    }
+    return res.json(result);
+  });
+});
+
+app.get("/expenses/today/:userId", (req, res) => {
+  const { userId } = req.params;
+  con.query(
+    "SELECT * FROM expense WHERE user_id = ? AND DATE(date) = CURDATE()",
+    [userId],
+    (err, results) => {
+      if (err) return res.status(500).send("DB error");
+      res.json(results);
+    }
+  );
 });
 
 app.listen(3000, () => {
