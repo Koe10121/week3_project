@@ -144,7 +144,7 @@ Future<void> add_expense(int userId) async {
   }
 }
 
-  Future<void> delete_expense(int userId) async {
+Future<void> delete_expense(int userId) async {
   print('===== Delete an item =====');
   stdout.write('Item id:');
   String? idStr = stdin.readLineSync()?.trim();
@@ -166,4 +166,3 @@ Future<void> add_expense(int userId) async {
     print('Unknown error');
   }
 }
-
