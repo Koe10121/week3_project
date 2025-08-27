@@ -56,7 +56,7 @@ app.get('/expenses/search/:userId', (req, res) => {
   const userId = req.params.userId;
   const item = req.query.item;
   const sql = 'SELECT * FROM expense WHERE user_id = ? AND item LIKE ?';
-  con.query(sql, [userId, '%${item}%'], (err, result) => {
+  con.query(sql, [userId, `%${item}%`], (err, result) => {
     if (err) {
       return res.status(500).send('Server error');
     }
