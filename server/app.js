@@ -52,6 +52,18 @@ app.get("/expenses/today/:userId", (req, res) => {
   );
 });
 
+app.get('/expenses/search/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const item = req.query.item;
+  const sql = 'SELECT * FROM expense WHERE user_id = ? AND item LIKE ?';
+  con.query(sql, [userId, '%${item}%'], (err, result) => {
+    if (err) {
+      return res.status(500).send('Server error');
+    }
+    return res.json(result);
+  });
+});
+
 app.listen(3000, () => {
   console.log('Server is running');
 });
